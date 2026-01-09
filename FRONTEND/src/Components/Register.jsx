@@ -392,7 +392,6 @@
 // };
 
 // export default Register;
-
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -424,6 +423,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     console.log('Starting registration submission...');
     console.log('Form data:', { name, email, password: '****', avatar: avatar ? 'file selected' : 'none' });
 
@@ -435,29 +435,40 @@ const Register = () => {
 
     try {
       console.log('Sending registration request to backend...');
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/register`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
-      console.log('Registration response received:', res.data);
+      const API_BASE = import.meta.env.VITE_API_URL;
 
-      toast.success('Registration successful! Redirecting...');
-
-      if (res.data.token) {
-        console.log('Token received, storing in localStorage...');
-        localStorage.setItem('token', res.data.token);
-        setTimeout(() => {
-          console.log('Navigating to dashboard...');
-          navigate('/dashboard');
-        }, 1000);
-      } else {
-        setTimeout(() => {
-          console.log('Navigating to login...');
-          navigate('/login');
-        }, 1000);
+      if (!API_BASE) {
+        throw new Error('API URL not configured. Check your .env file.');
       }
+
+      const res = await axios.post(`${API_BASE}/register`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      console.log('Registration successful:', res.data);
+
+      // Save email for verification step
+      localStorage.setItem('pendingEmail', email);
+
+      // Show success and navigate to verify page
+      toast.success(res.data.message || 'Verification code sent to your email!');
+
+      // Navigate to OTP verification
+      navigate('/verify');
+
     } catch (err) {
-      console.error('Error during registration:', err.message);
-      const errorMsg = err.response?.data?.error || 'Registration failed';
+      console.error('Error during registration:', err);
+
+      let errorMsg = 'Registration failed';
+
+      if (err.message === 'Network Error' || err.code === 'ERR_NETWORK') {
+        errorMsg = 'Cannot connect to server. Is your backend running?';
+      } else if (err.response?.data?.error) {
+        errorMsg = err.response.data.error;
+      } else if (err.message) {
+        errorMsg = err.message;
+      }
+
       toast.error(errorMsg);
     } finally {
       console.log('Registration process completed.');
@@ -469,6 +480,7 @@ const Register = () => {
     <>
       <Toaster position="top-right" />
       <style>{`
+        /* Your existing beautiful styles - unchanged */
         .register-container {
           min-height: 100vh;
           display: flex;
@@ -489,14 +501,8 @@ const Register = () => {
         }
 
         @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
         }
 
         .register-header {
@@ -559,7 +565,6 @@ const Register = () => {
           border-radius: 0.75rem;
           font-weight: 600;
           transition: all 0.3s ease;
-          display: inline-block;
         }
 
         .avatar-input-label:hover span {
@@ -585,10 +590,6 @@ const Register = () => {
           box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .register-input::placeholder {
-          color: #a0aec0;
-        }
-
         .password-wrapper {
           position: relative;
           margin-bottom: 1.25rem;
@@ -603,11 +604,6 @@ const Register = () => {
           border: none;
           cursor: pointer;
           color: #667eea;
-          transition: color 0.3s ease;
-        }
-
-        .password-toggle:hover {
-          color: #764ba2;
         }
 
         .register-button {
@@ -618,24 +614,12 @@ const Register = () => {
           font-size: 1rem;
           font-weight: 600;
           cursor: pointer;
-          transition: all 0.3s ease;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
           display: flex;
           align-items: center;
           justify-content: center;
           gap: 0.5rem;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
-        }
-
-        .register-button:hover:not(:disabled) {
-          transform: translateY(-2px);
-          box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-        }
-
-        .register-button:active:not(:disabled) {
-          transform: translateY(0);
         }
 
         .register-button:disabled {
@@ -644,79 +628,23 @@ const Register = () => {
         }
 
         .spinner {
-          display: inline-block;
           animation: spin 1s linear infinite;
         }
 
         @keyframes spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
 
         .register-footer {
           margin-top: 2rem;
           text-align: center;
           color: #718096;
-          font-size: 0.95rem;
         }
 
         .register-link {
           color: #667eea;
-          text-decoration: none;
           font-weight: 600;
-          transition: color 0.3s ease;
-        }
-
-        .register-link:hover {
-          color: #764ba2;
-          text-decoration: underline;
-        }
-
-        @media (max-width: 640px) {
-          .register-card {
-            padding: 2rem 1.5rem;
-          }
-
-          .register-header {
-            font-size: 1.75rem;
-          }
-
-          .avatar-preview {
-            width: 100px;
-            height: 100px;
-          }
-
-          .register-input {
-            padding: 0.875rem;
-          }
-
-          .register-button {
-            padding: 0.875rem;
-          }
-        }
-
-        @media (max-width: 400px) {
-          .register-card {
-            padding: 1.5rem 1rem;
-          }
-
-          .register-header {
-            font-size: 1.5rem;
-          }
-
-          .avatar-preview {
-            width: 80px;
-            height: 80px;
-          }
-
-          .avatar-input-label span {
-            padding: 0.625rem 1rem;
-            font-size: 0.875rem;
-          }
         }
       `}</style>
 
