@@ -19,9 +19,6 @@ const Login = () => {
     }
   };
 
-  const handleGoogle = () => {
-    window.location.href = `${import.meta.env.VITE_API_URL}/google`;
-  };
 
   return (
     <>
@@ -222,9 +219,7 @@ const Login = () => {
           <button type="submit" className="login-button login-button-primary">
             Login
           </button>
-          <button type="button" onClick={handleGoogle} className="login-button login-button-google">
-            Login with Google
-          </button>
+          
           <p className="login-footer">
             No account? <Link to="/register" className="login-link">Register</Link>
           </p>

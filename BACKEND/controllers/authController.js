@@ -54,15 +54,15 @@ exports.login = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-exports.googleCallback = (req, res) => {
-  const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-  res.redirect(`${process.env.FRONTEND_URL}/dashboard?token=${token}`);
-};
+
 exports.getUser = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
     res.json(user);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Server error' });
   }
 };
