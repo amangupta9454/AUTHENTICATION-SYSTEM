@@ -1,20 +1,3 @@
-// const mongoose = require('mongoose');
-// const bcrypt = require('bcryptjs');
-
-// const userSchema = new mongoose.Schema({
-//   name: { type: String, required: true },
-//   email: { type: String, required: true, unique: true, lowercase: true },
-//   password: { type: String },
-//   avatar: { type: String },
-//   isVerified: { type: Boolean, default: false },
-//   verificationOtp: { type: String },
-//   verificationOtpExpires: { type: Date },
-// });
-// userSchema.methods.comparePassword = async function(password) {
-//   return bcrypt.compare(password, this.password);
-// };
-// module.exports = mongoose.model('User', userSchema);
-// models/User.js (updated with reset fields, removed pre-save as per previous fix)
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 

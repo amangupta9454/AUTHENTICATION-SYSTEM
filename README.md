@@ -15,7 +15,8 @@ AUTH/
 │
 ├── BACKEND/
 │   ├── config/
-│   │   ├── passport.js          # Google OAuth strategy
+│   │   ├── emailTemplates.js 
+│   │   ├── nodemailer.js          
 │   ├── controllers/
 │   │   ├── authController.js
 │   ├── models/
@@ -24,8 +25,7 @@ AUTH/
 │   │   ├── authRoutes.js
 │   ├── middlewares/
 │   │   ├── authMiddleware.js
-│   ├── uploads/                # Temporary file uploads
-│   ├── server.js               # App entry point
+│   ├── index.js               # App entry point
 │   ├── package.json
 │   └── .env
 │
@@ -38,6 +38,9 @@ AUTH/
 │   │   │   ├── Login.jsx
 │   │   │   ├── Register.jsx
 │   │   │   ├── Dashboard.jsx
+│   │   │   ├── ForgetPassword.jsx
+│   │   │   ├── Verify.jsx
+│   │   │   ├── VerifyReset.jsx
 │   │   ├── App.jsx
 │   │   └── main.jsx
 │   │
@@ -56,7 +59,7 @@ AUTH/
   <li>🗄️ Database: MongoDB</li>
   <li>🔐 Authentication: JWT, Google OAuth</li>
   <li>☁️ File Storage: Cloudinary</li>
-  <li>🌍 Hosting: Netlify, Render</li>
+  <li>🌍 Hosting: Netlify, Vercel</li>
 </ul>
 
 <hr />
@@ -68,12 +71,10 @@ AUTH/
   <tr><td>mongoose</td><td>MongoDB ODM</td></tr>
   <tr><td>jsonwebtoken</td><td>JWT authentication</td></tr>
   <tr><td>bcryptjs</td><td>Password hashing</td></tr>
-  <tr><td>passport</td><td>OAuth authentication</td></tr>
-  <tr><td>passport-google-oauth20</td><td>Google OAuth</td></tr>
+  <tr><td>streamifier</td><td>Image Uploader Buffer</td></tr>
   <tr><td>cloudinary</td><td>Media storage</td></tr>
   <tr><td>multer</td><td>File uploads</td></tr>
   <tr><td>nodemailer</td><td>Email service</td></tr>
-  <tr><td>resend</td><td>Email API</td></tr>
   <tr><td>cors</td><td>CORS handling</td></tr>
   <tr><td>dotenv</td><td>Environment variables</td></tr>
 </table>
@@ -130,6 +131,8 @@ CLOUDINARY_API_SECRET=your_cloudinary_secret
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 FRONTEND_URL=http://localhost:5173
+EMAIL_USER= your nodemailer email id
+EMAIL_PASS=your 16 digit app password
 </pre>
 
 <hr />
@@ -137,7 +140,6 @@ FRONTEND_URL=http://localhost:5173
 <h3>🎨 Frontend .env</h3>
 <pre>
 VITE_API_URL=http://localhost:5000/api/auth
-VITE_GOOGLE_CLIENT_ID=Google OAuth client ID
 </pre>
 
 <hr />
