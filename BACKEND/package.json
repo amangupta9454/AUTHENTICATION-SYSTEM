@@ -18,9 +18,12 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "install": "^0.13.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.1.2",
     "multer": "^2.0.2",
-    "nodemailer": "^7.0.12"
+    "nodemailer": "^7.0.12",
+    "npm": "^11.7.0",
+    "streamifier": "^0.1.1"
   }
 }

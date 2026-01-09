@@ -17,7 +17,12 @@ const authController = require('../controllers/authController');
 const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
-const upload = multer({ dest: 'uploads/' });
+
+// Use memory storage – critical for Vercel (no disk write)
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
+});
 
 router.post('/register', upload.single('avatar'), authController.register);
 router.post('/login', authController.login);
