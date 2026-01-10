@@ -1,9 +1,8 @@
-// yh components tb render hoga jb user tap krega forget password ppr us time jo form appear hoga wo isi me dikhega
-
+// ForgotPassword.jsx
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Mail, Loader } from 'lucide-react';
+import { Mail, Loader2, ArrowLeft } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
 const ForgotPassword = () => {
@@ -14,13 +13,22 @@ const ForgotPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/forgot-password`, { email });
+
       localStorage.setItem('pendingResetEmail', email);
-      toast.success(res.data.message);
+      toast.success(res.data.message || 'Reset code sent to your email', {
+        duration: 5000,
+      });
+
       navigate('/verify-reset');
     } catch (err) {
-      toast.error(err.response?.data?.error || 'Failed to send code');
+      const errorMsg =
+        err.response?.data?.error ||
+        (err.code === 'ERR_NETWORK' ? 'Cannot reach server' : 'Failed to send reset code');
+
+      toast.error(errorMsg);
     } finally {
       setLoading(false);
     }
@@ -28,41 +36,73 @@ const ForgotPassword = () => {
 
   return (
     <>
-      <Toaster position="top-right" />
-      <style>{`
-        .forgot-container { min-height: 100vh; display: flex; align-items: center; justify-content: center;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1rem; }
-        .forgot-card { background: white; padding: 3rem; border-radius: 1.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-          width: 100%; max-width: 440px; animation: slideUp 0.5s ease-out; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        .forgot-header { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 2rem;
-          font-size: 2rem; font-weight: 700; color: #1a202c; }
-        .forgot-input { width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 0.75rem;
-          font-size: 1rem; margin-bottom: 1.25rem; outline: none; }
-        .forgot-input:focus { border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.1); }
-        .forgot-button { width: 100%; padding: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white; border: none; border-radius: 0.75rem; font-size: 1rem; font-weight: 600;
-          display: flex; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer; }
-        .forgot-button:disabled { opacity: 0.7; cursor: not-allowed; }
-        .spinner { animation: spin 1s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .forgot-footer { margin-top: 2rem; text-align: center; color: #718096; }
-        .forgot-link { color: #667eea; font-weight: 600; }
-      `}</style>
+      <Toaster />
 
-      <div className="forgot-container">
-        <form onSubmit={handleSubmit} className="forgot-card">
-          <h2 className="forgot-header"><Mail size={32} /> Forgot Password</h2>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your registered email" className="forgot-input" required />
-          <button type="submit" className="forgot-button" disabled={loading}>
-            {loading && <Loader size={20} className="spinner" />}
-            {loading ? 'Sending...' : 'Send Reset Code'}
-          </button>
-          <p className="forgot-footer">
-            Back to <Link to="/login" className="forgot-link">Login</Link>
-          </p>
-        </form>
+      <div className="min-h-screen bg-linear-to-br from-gray-950 via-gray-900 to-black">
+        {/* Navbar spacer */}
+        <div className="h-16 md:h-20" aria-hidden="true" />
+
+        <main className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+          <div className="w-full max-w-md">
+            <div className="relative bg-gray-900/65 backdrop-blur-2xl border border-gray-800/50 rounded-2xl shadow-2xl shadow-black/60 overflow-hidden">
+              {/* Header */}
+              <div className="px-8 pt-10 pb-6 text-center border-b border-gray-800/40">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-linear-to-br from-red-600 to-rose-700 mb-6 shadow-lg shadow-red-900/40">
+                  <Mail size={28} className="text-white" />
+                </div>
+
+                <h1 className="text-3xl font-bold text-white tracking-tight mb-2">
+                  Reset Your Password
+                </h1>
+
+                <p className="text-gray-400">
+                  Enter your registered email address and we'll send you a reset code
+                </p>
+              </div>
+
+              {/* Form */}
+              <form onSubmit={handleSubmit} className="p-8 lg:p-10 space-y-6">
+                {/* Email Input */}
+                <div className="space-y-2">
+                  <label htmlFor="email" className="text-sm font-medium text-gray-300 block">
+                    Email Address
+                  </label>
+                  <div className="relative group">
+                    <Mail size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 transition-colors group-focus-within:text-rose-500"/>
+                    <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value.trim())} placeholder="name@company.com" autoComplete="email" required className="w-full bg-gray-800/50 border border-gray-700/80 text-white  pl-11 pr-4 py-3.5 rounded-xl outline-none focus:border-rose-600 focus:ring-2 focus:ring-rose-600/30 focus:bg-gray-800/60 transition-all duration-300 placeholder:text-gray-500 text-sm" />
+                  </div>
+                </div>
+
+                {/* Submit Button */}
+                <button type="submit" disabled={loading || !email.trim()} className="w-full bg-linear-to-r from-red-600 to-rose-700 hover:from-red-700 hover:to-rose-800 text-white font-medium py-3.5 rounded-xl transition-all duration-300 flex items-center justify-center gap-2.5shadow-lg shadow-red-900/40 disabled:opacity-60 disabled:cursor-not-allowed disabled:shadow-none">
+                  {loading ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin" />
+                      <span>Sending Reset Code...</span>
+                    </>
+                  ) : (
+                    'Send Reset Code'
+                  )}
+                </button>
+
+                {/* Navigation Links */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm pt-2">
+                  <Link to="/login" className="flex items-center gap-2 text-gray-400 hover:text-gray-300 transition-colors" >
+                    <ArrowLeft size={16} />
+                    Back to Login
+                  </Link>
+
+                  <Link to="/register" className="text-rose-400 hover:text-rose-300 transition-colors">
+                    Don't have an account? Sign up
+                  </Link>
+                </div>
+              </form>
+            </div>
+          </div>
+        </main>
+
+        {/* Footer spacer */}
+        <div className="h-16 md:h-20" aria-hidden="true" />
       </div>
     </>
   );

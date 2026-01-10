@@ -1,133 +1,8 @@
-// import { useState, useEffect } from 'react';
-// import { Link, useNavigate } from 'react-router-dom';
-// import axios from 'axios';
-// import { Mail, Loader, CheckCircle } from 'lucide-react';
-// import toast, { Toaster } from 'react-hot-toast';
-
-// const Verify = () => {
-//   const [otp, setOtp] = useState(['', '', '', '', '', '']);
-//   const [email, setEmail] = useState('');
-//   const [loading, setLoading] = useState(false);
-//   const [resending, setResending] = useState(false);
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     const savedEmail = localStorage.getItem('pendingEmail');
-//     if (savedEmail) setEmail(savedEmail);
-//   }, []);
-
-//   const handleChange = (value, index) => {
-//     if (!/^\d?$/.test(value)) return;
-//     const newOtp = [...otp];
-//     newOtp[index] = value;
-//     setOtp(newOtp);
-//     if (value && index < 5) {
-//       document.getElementById(`otp-${index + 1}`)?.focus();
-//     }
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-//     const code = otp.join('');
-
-//     try {
-//       const res = await axios.post(`${import.meta.env.VITE_API_URL}/verify-otp`, {
-//         email,
-//         otp: code,
-//       });
-
-//       localStorage.setItem('token', res.data.token);
-//       localStorage.removeItem('pendingEmail');
-//       toast.success('Verified successfully! Welcome 🎉');
-//       setTimeout(() => navigate('/dashboard'), 1500);
-//     } catch (err) {
-//       toast.error(err.response?.data?.error || 'Invalid or expired OTP');
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const handleResend = async () => {
-//     setResending(true);
-//     try {
-//       await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, { email });
-//       toast.success('New OTP sent!');
-//     } catch (err) {
-//       toast.error('Failed to resend OTP');
-//     } finally {
-//       setResending(false);
-//     }
-//   };
-
-//   return (
-//     <>
-//       <Toaster position="top-right" />
-//       <style jsx>{`
-//         .verify-container { min-height: 100vh; display: flex; align-items: center; justify-content: center;
-//           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1rem; }
-//         .verify-card { background: white; padding: 3rem; border-radius: 1.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-//           width: 100%; max-width: 500px; text-align: center; animation: slideUp 0.6s ease-out; }
-//         .otp-inputs { display: flex; gap: 12px; justify-content: center; margin: 30px 0; }
-//         .otp-input { width: 60px; height: 60px; font-size: 28px; font-weight: bold; text-align: center;
-//           border: 2px solid #e2e8f0; border-radius: 12px; transition: all 0.3s; }
-//         .otp-input:focus { border-color: #667eea; box-shadow: 0 0 0 4px rgba(102,126,234,0.2); outline: none; }
-//         .verify-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-//           color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: 600; cursor: pointer; margin-top: 20px; }
-//         .resend { color: #667eea; cursor: pointer; text-decoration: underline; margin-top: 20px; display: block; }
-//         @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-//       `}</style>
-
-//       <div className="verify-container">
-//         <div className="verify-card">
-//           <Mail size={60} color="#667eea" />
-//           <h2 style={{ margin: '20px 0', fontSize: '28px' }}>Verify Your Email</h2>
-//           <p style={{ color: '#718096', marginBottom: '30px' }}>
-//             Enter the 6-digit code sent to<br />
-//             <strong>{email || 'your email'}</strong>
-//           </p>
-
-//           <form onSubmit={handleSubmit}>
-//             <div className="otp-inputs">
-//               {otp.map((digit, i) => (
-//                 <input
-//                   key={i}
-//                   id={`otp-${i}`}
-//                   type="text"
-//                   maxLength="1"
-//                   value={digit}
-//                   onChange={(e) => handleChange(e.target.value, i)}
-//                   className="otp-input"
-//                   required
-//                 />
-//               ))}
-//             </div>
-
-//             <button type="submit" className="verify-btn" disabled={loading}>
-//               {loading ? <Loader size={24} className="spinner" style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }} /> : 'Verify'}
-//             </button>
-//           </form>
-
-//           <div className="resend" onClick={handleResend}>
-//             {resending ? 'Resending...' : "Didn't receive code? Resend OTP"}
-//           </div>
-
-//           <p style={{ marginTop: '30px', color: '#718096' }}>
-//             <Link to="/login" style={{ color: '#667eea', textDecoration: 'none' }}>← Back to Login</Link>
-//           </p>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
-
-// export default Verify;
-
-// yh to new user ko email verify krane ke liye use ho rha hai
-import { useState, useEffect } from 'react';
+// Verify.jsx
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Mail, Loader } from 'lucide-react';
+import { Mail, Loader2, ArrowLeft, RefreshCw } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
 const Verify = () => {
@@ -135,40 +10,82 @@ const Verify = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
+  const [countdown, setCountdown] = useState(60); // resend cooldown
+  const inputRefs = useRef([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const savedEmail = localStorage.getItem('pendingEmail');
-    if (savedEmail) setEmail(savedEmail);
-  }, []);
+    if (savedEmail) {
+      setEmail(savedEmail);
+    } else {
+      // If no pending email, redirect to register
+      navigate('/register');
+    }
+
+    // Auto-focus first input
+    inputRefs.current[0]?.focus();
+  }, [navigate]);
+
+  // Resend countdown timer
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(c => c - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [countdown]);
 
   const handleChange = (value, index) => {
-    if (!/^[a-zA-Z0-9]?$/.test(value)) return;
+    if (value.length > 1) return;
+    if (value && !/^[a-zA-Z0-9]$/.test(value)) return;
+
     const newOtp = [...otp];
-    newOtp[index] = value;
+    newOtp[index] = value.toUpperCase();
     setOtp(newOtp);
-    if (value && index < 5) document.getElementById(`otp-${index + 1}`)?.focus();
+
+    if (value && index < 5) {
+      inputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleKeyDown = (e, index) => {
+    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    }
   };
 
   const handlePaste = (e) => {
     e.preventDefault();
-    const pasted = e.clipboardData.getData('text').trim().slice(0, 6);
+    const pasted = e.clipboardData.getData('text').trim().replace(/\s/g, '').slice(0, 6);
+    
     if (/^[a-zA-Z0-9]{6}$/.test(pasted)) {
-      setOtp(pasted.split(''));
-      document.getElementById('otp-5')?.focus();
+      const chars = pasted.toUpperCase().split('');
+      setOtp(chars);
+      inputRefs.current[5]?.focus();
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     const code = otp.join('');
+    if (code.length !== 6) return;
+
+    setLoading(true);
+
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/verify-otp`, { email, otp: code });
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/verify-otp`, {
+        email,
+        otp: code,
+      });
+
       localStorage.setItem('token', res.data.token);
       localStorage.removeItem('pendingEmail');
-      toast.success('Verified successfully! Welcome 🎉');
-      setTimeout(() => navigate('/dashboard'), 1500);
+
+      toast.success('Email verified successfully! Welcome aboard.', {
+        duration: 4000,
+      });
+
+      setTimeout(() => navigate('/dashboard'), 1200);
     } catch (err) {
       toast.error(err.response?.data?.error || 'Invalid or expired OTP');
     } finally {
@@ -177,12 +94,17 @@ const Verify = () => {
   };
 
   const handleResend = async () => {
+    if (countdown > 0) return;
+
     setResending(true);
+    setCountdown(60);
+
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/register`, { email });
-      toast.success('New OTP sent!');
+      await axios.post(`${import.meta.env.VITE_API_URL}/resend-otp`, { email });
+      toast.success('New verification code sent!');
     } catch (err) {
-      toast.error('Failed to resend');
+      toast.error(err.response?.data?.error || 'Failed to resend code');
+      setCountdown(0); // allow immediate retry on error
     } finally {
       setResending(false);
     }
@@ -190,54 +112,74 @@ const Verify = () => {
 
   return (
     <>
-      <Toaster position="top-right" />
-      <style jsx>{`
-        .verify-container { min-height: 100vh; display: flex; align-items: center; justify-content: center;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1rem; }
-        .verify-card { background: white; padding: 3rem; border-radius: 1.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-          width: 100%; max-width: 500px; text-align: center; animation: slideUp 0.6s ease-out; }
-        .otp-inputs { display: flex; gap: 12px; justify-content: center; margin: 30px 0; }
-        .otp-input { width: 60px; height: 60px; font-size: 28px; font-weight: bold; text-align: center;
-          border: 2px solid #e2e8f0; border-radius: 12px; transition: all 0.3s; text-transform: none; }
-        .otp-input:focus { border-color: #667eea; box-shadow: 0 0 0 4px rgba(102,126,234,0.2); outline: none; }
-        .verify-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: 600; cursor: pointer;
-          margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .resend { color: #667eea; cursor: pointer; text-decoration: underline; margin-top: 20px; display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 640px) { .verify-card { padding: 2rem; } .otp-input { width: 48px; height: 48px; font-size: 24px; } }
-        @media (max-width: 400px) { .otp-inputs { gap: 8px; } .otp-input { width: 40px; height: 40px; font-size: 20px; } }
-      `}</style>
+      <Toaster />
 
-      <div className="verify-container">
-        <div className="verify-card">
-          <Mail size={60} color="#667eea" />
-          <h2 style={{ margin: '20px 0', fontSize: '28px' }}>Verify Your Email</h2>
-          <p style={{ color: '#718096', marginBottom: '30px' }}>
-            Enter the 6-character code sent to<br /><strong>{email || 'your email'}</strong>
-          </p>
+      <div className="min-h-screen bg-linear-to-br from-gray-950 via-gray-900 to-black">
+        {/* Navbar spacer */}
+        <div className="h-16 md:h-20" aria-hidden="true" />
 
-          <form onSubmit={handleSubmit}>
-            <div className="otp-inputs" onPaste={handlePaste}>
-              {otp.map((digit, i) => (
-                <input key={i} id={`otp-${i}`} type="text" maxLength="1" value={digit}
-                  onChange={(e) => handleChange(e.target.value, i)} className="otp-input" required />
-              ))}
+        <main className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+          <div className="w-full max-w-md">
+            <div className="relative bg-gray-900/60 backdrop-blur-2xl border border-gray-800/50 rounded-2xl shadow-2xl shadow-black/60 overflow-hidden">
+              {/* Header */}
+              <div className="px-8 pt-10 pb-6 text-center border-b border-gray-800/40">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-linear-to-br from-indigo-600 to-purple-700 mb-6 shadow-lg shadow-indigo-900/40">
+                  <Mail size={28} className="text-white" />
+                </div>
+                <h1 className="text-3xl font-bold text-white tracking-tight mb-2">
+                  Verify Email
+                </h1>
+                <p className="text-gray-400">
+                  Enter the 6-digit code sent to
+                  <br />
+                  <span className="text-indigo-400 font-medium">{email || 'your email'}</span>
+                </p>
+              </div>
+
+              {/* Form */}
+              <form onSubmit={handleSubmit} className="p-8 lg:p-10 space-y-8">
+                {/* OTP Inputs */}
+                <div   className="flex justify-center gap-3 sm:gap-4"  onPaste={handlePaste} >
+                  {otp.map((digit, index) => (
+                    <input  key={index}  ref={(el) => (inputRefs.current[index] = el)}   id={`otp-${index}`}  type="text"  maxLength={1} value={digit} onChange={(e) => handleChange(e.target.value, index)} onKeyDown={(e) => handleKeyDown(e, index)}
+                      className="w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl font-bold bg-gray-800/50   border border-gray-700 rounded-lg text-white outline-none
+                               focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/30
+                               transition-all duration-200"  autoComplete="one-time-code" />
+                  ))}
+                </div>
+
+                {/* Submit Button */}
+                <button  type="submit" disabled={loading || otp.join('').length !== 6} className="w-full bg-linear-to-r from-indigo-600 to-purple-700   hover:from-indigo-700 hover:to-purple-800  text-white font-medium py-3.5 rounded-xl  transition-all duration-300 flex items-center justify-center gap-2  shadow-lg shadow-indigo-900/40 disabled:opacity-60" >
+                  {loading ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin" />
+                      <span>Verifying...</span>
+                    </>
+                  ) : (
+                    'Verify Email'
+                  )}
+                </button>
+
+                {/* Resend & Back */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
+                  <button type="button"  onClick={handleResend} disabled={resending || countdown > 0} className="flex items-center gap-2 text-indigo-400 hover:text-indigo-300 
+                             transition-colors disabled:opacity-50 disabled:cursor-not-allowed" >
+                    <RefreshCw size={16} className={resending ? 'animate-spin' : ''} />
+                    {countdown > 0   ? `Resend in ${countdown}s`  : resending   ? 'Sending...'   : 'Resend Code'}
+                  </button>
+
+                  <Link  to="/login" className="flex items-center gap-2 text-gray-400 hover:text-gray-300 transition-colors"  >
+                    <ArrowLeft size={16} />
+                    Back to Login
+                  </Link>
+                </div>
+              </form>
             </div>
-            <button type="submit" className="verify-btn" disabled={loading}>
-              {loading && <Loader size={24} style={{ animation: 'spin 1s linear infinite' }} />}
-              Verify
-            </button>
-          </form>
-
-          <div className="resend" onClick={handleResend}>
-            {resending ? 'Resending...' : "Didn't receive code? Resend OTP"}
           </div>
+        </main>
 
-          <p style={{ marginTop: '30px', color: '#718096' }}>
-            <Link to="/login" style={{ color: '#667eea', textDecoration: 'none' }}>← Back to Login</Link>
-          </p>
-        </div>
+        {/* Footer spacer */}
+        <div className="h-16 md:h-20" aria-hidden="true" />
       </div>
     </>
   );

@@ -1,401 +1,7 @@
-// import { useState } from 'react';
-// import { Link, useNavigate } from 'react-router-dom';
-// import axios from 'axios';
-// import { UserPlus, Eye, EyeOff, Loader } from 'lucide-react';
-// import toast, { Toaster } from 'react-hot-toast';
-
-// const Register = () => {
-//   const [name, setName] = useState('');
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [avatar, setAvatar] = useState(null);
-//   const [avatarPreview, setAvatarPreview] = useState(null);
-//   const [showPassword, setShowPassword] = useState(false);
-//   const [loading, setLoading] = useState(false);
-//   const navigate = useNavigate();
-
-//   const handleAvatarChange = (e) => {
-//     const file = e.target.files[0];
-//     if (file) {
-//       setAvatar(file);
-//       const reader = new FileReader();
-//       reader.onloadend = () => {
-//         setAvatarPreview(reader.result);
-//       };
-//       reader.readAsDataURL(file);
-//     }
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-
-//     const formData = new FormData();
-//     formData.append('name', name);
-//     formData.append('email', email);
-//     formData.append('password', password);
-//     if (avatar) formData.append('avatar', avatar);
-
-//     try {
-//       const res = await axios.post(`${import.meta.env.VITE_API_URL}/register`, formData, {
-//         headers: { 'Content-Type': 'multipart/form-data' }
-//       });
-
-//       toast.success('Registration successful! Redirecting...');
-
-//       if (res.data.token) {
-//         localStorage.setItem('token', res.data.token);
-//         setTimeout(() => navigate('/dashboard'), 1000);
-//       } else {
-//         setTimeout(() => navigate('/login'), 1000);
-//       }
-//     } catch (err) {
-//       const errorMsg = err.response?.data?.error || 'Registration failed';
-//       toast.error(errorMsg);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <>
-//       <Toaster position="top-right" />
-//       <style>{`
-//         .register-container {
-//           min-height: 100vh;
-//           display: flex;
-//           align-items: center;
-//           justify-content: center;
-//           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-//           padding: 1rem;
-//         }
-
-//         .register-card {
-//           background: white;
-//           padding: 3rem;
-//           border-radius: 1.5rem;
-//           box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-//           width: 100%;
-//           max-width: 480px;
-//           animation: slideUp 0.5s ease-out;
-//         }
-
-//         @keyframes slideUp {
-//           from {
-//             opacity: 0;
-//             transform: translateY(30px);
-//           }
-//           to {
-//             opacity: 1;
-//             transform: translateY(0);
-//           }
-//         }
-
-//         .register-header {
-//           display: flex;
-//           align-items: center;
-//           justify-content: center;
-//           gap: 0.75rem;
-//           margin-bottom: 2rem;
-//           font-size: 2rem;
-//           font-weight: 700;
-//           color: #1a202c;
-//         }
-
-//         .avatar-section {
-//           display: flex;
-//           flex-direction: column;
-//           align-items: center;
-//           margin-bottom: 1.5rem;
-//         }
-
-//         .avatar-preview {
-//           width: 120px;
-//           height: 120px;
-//           border-radius: 50%;
-//           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-//           display: flex;
-//           align-items: center;
-//           justify-content: center;
-//           margin-bottom: 1rem;
-//           overflow: hidden;
-//           box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-//           border: 4px solid #f0f4ff;
-//         }
-
-//         .avatar-preview img {
-//           width: 100%;
-//           height: 100%;
-//           object-fit: cover;
-//         }
-
-//         .avatar-placeholder {
-//           font-size: 3rem;
-//           color: white;
-//         }
-
-//         .avatar-input-label {
-//           position: relative;
-//           display: inline-block;
-//           cursor: pointer;
-//         }
-
-//         .avatar-input {
-//           display: none;
-//         }
-
-//         .avatar-input-label span {
-//           padding: 0.75rem 1.5rem;
-//           background: #f0f4ff;
-//           color: #667eea;
-//           border-radius: 0.75rem;
-//           font-weight: 600;
-//           transition: all 0.3s ease;
-//           display: inline-block;
-//         }
-
-//         .avatar-input-label:hover span {
-//           background: #667eea;
-//           color: white;
-//           transform: translateY(-2px);
-//           box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-//         }
-
-//         .register-input {
-//           width: 100%;
-//           padding: 1rem;
-//           border: 2px solid #e2e8f0;
-//           border-radius: 0.75rem;
-//           font-size: 1rem;
-//           margin-bottom: 1.25rem;
-//           transition: all 0.3s ease;
-//           outline: none;
-//         }
-
-//         .register-input:focus {
-//           border-color: #667eea;
-//           box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-//         }
-
-//         .register-input::placeholder {
-//           color: #a0aec0;
-//         }
-
-//         .password-wrapper {
-//           position: relative;
-//           margin-bottom: 1.25rem;
-//         }
-
-//         .password-toggle {
-//           position: absolute;
-//           right: 1rem;
-//           top: 50%;
-//           transform: translateY(-50%);
-//           background: none;
-//           border: none;
-//           cursor: pointer;
-//           color: #667eea;
-//           transition: color 0.3s ease;
-//         }
-
-//         .password-toggle:hover {
-//           color: #764ba2;
-//         }
-
-//         .register-button {
-//           width: 100%;
-//           padding: 1rem;
-//           border: none;
-//           border-radius: 0.75rem;
-//           font-size: 1rem;
-//           font-weight: 600;
-//           cursor: pointer;
-//           transition: all 0.3s ease;
-//           text-transform: uppercase;
-//           letter-spacing: 0.5px;
-//           display: flex;
-//           align-items: center;
-//           justify-content: center;
-//           gap: 0.5rem;
-//           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-//           color: white;
-//         }
-
-//         .register-button:hover:not(:disabled) {
-//           transform: translateY(-2px);
-//           box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-//         }
-
-//         .register-button:active:not(:disabled) {
-//           transform: translateY(0);
-//         }
-
-//         .register-button:disabled {
-//           opacity: 0.7;
-//           cursor: not-allowed;
-//         }
-
-//         .spinner {
-//           display: inline-block;
-//           animation: spin 1s linear infinite;
-//         }
-
-//         @keyframes spin {
-//           from {
-//             transform: rotate(0deg);
-//           }
-//           to {
-//             transform: rotate(360deg);
-//           }
-//         }
-
-//         .register-footer {
-//           margin-top: 2rem;
-//           text-align: center;
-//           color: #718096;
-//           font-size: 0.95rem;
-//         }
-
-//         .register-link {
-//           color: #667eea;
-//           text-decoration: none;
-//           font-weight: 600;
-//           transition: color 0.3s ease;
-//         }
-
-//         .register-link:hover {
-//           color: #764ba2;
-//           text-decoration: underline;
-//         }
-
-//         @media (max-width: 640px) {
-//           .register-card {
-//             padding: 2rem 1.5rem;
-//           }
-
-//           .register-header {
-//             font-size: 1.75rem;
-//           }
-
-//           .avatar-preview {
-//             width: 100px;
-//             height: 100px;
-//           }
-
-//           .register-input {
-//             padding: 0.875rem;
-//           }
-
-//           .register-button {
-//             padding: 0.875rem;
-//           }
-//         }
-
-//         @media (max-width: 400px) {
-//           .register-card {
-//             padding: 1.5rem 1rem;
-//           }
-
-//           .register-header {
-//             font-size: 1.5rem;
-//           }
-
-//           .avatar-preview {
-//             width: 80px;
-//             height: 80px;
-//           }
-
-//           .avatar-input-label span {
-//             padding: 0.625rem 1rem;
-//             font-size: 0.875rem;
-//           }
-//         }
-//       `}</style>
-
-//       <div className="register-container">
-//         <form onSubmit={handleSubmit} className="register-card">
-//           <h2 className="register-header">
-//             <UserPlus size={32} /> Register
-//           </h2>
-
-//           <div className="avatar-section">
-//             <div className="avatar-preview">
-//               {avatarPreview ? (
-//                 <img src={avatarPreview} alt="Avatar preview" />
-//               ) : (
-//                 <span className="avatar-placeholder">👤</span>
-//               )}
-//             </div>
-//             <label className="avatar-input-label">
-//               <input
-//                 type="file"
-//                 accept="image/*"
-//                 onChange={handleAvatarChange}
-//                 className="avatar-input"
-//               />
-//               <span>Choose Avatar</span>
-//             </label>
-//           </div>
-
-//           <input
-//             type="text"
-//             value={name}
-//             onChange={(e) => setName(e.target.value)}
-//             placeholder="Full Name"
-//             className="register-input"
-//             required
-//           />
-
-//           <input
-//             type="email"
-//             value={email}
-//             onChange={(e) => setEmail(e.target.value)}
-//             placeholder="Email Address"
-//             className="register-input"
-//             required
-//           />
-
-//           <div className="password-wrapper">
-//             <input
-//               type={showPassword ? 'text' : 'password'}
-//               value={password}
-//               onChange={(e) => setPassword(e.target.value)}
-//               placeholder="Password"
-//               className="register-input"
-//               style={{ paddingRight: '3rem' }}
-//               required
-//             />
-//             <button
-//               type="button"
-//               onClick={() => setShowPassword(!showPassword)}
-//               className="password-toggle"
-//             >
-//               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-//             </button>
-//           </div>
-
-//           <button type="submit" className="register-button" disabled={loading}>
-//             {loading && <Loader size={20} className="spinner" />}
-//             {loading ? 'Creating Account...' : 'Register'}
-//           </button>
-
-//           <p className="register-footer">
-//             Already have an account?{' '}
-//             <Link to="/login" className="register-link">
-//               Login
-//             </Link>
-//           </p>
-//         </form>
-//       </div>
-//     </>
-//   );
-// };
-
-// export default Register;
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { UserPlus, Eye, EyeOff, Loader } from 'lucide-react';
+import { UserPlus, Eye, EyeOff, Loader2, Mail, Lock, User } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
 const Register = () => {
@@ -411,11 +17,13 @@ const Register = () => {
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        toast.error('Image size should be less than 5MB');
+        return;
+      }
       setAvatar(file);
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setAvatarPreview(reader.result);
-      };
+      reader.onloadend = () => setAvatarPreview(reader.result);
       reader.readAsDataURL(file);
     }
   };
@@ -424,9 +32,6 @@ const Register = () => {
     e.preventDefault();
     setLoading(true);
 
-    console.log('Starting registration submission...');
-    console.log('Form data:', { name, email, password: '****', avatar: avatar ? 'file selected' : 'none' });
-
     const formData = new FormData();
     formData.append('name', name);
     formData.append('email', email);
@@ -434,294 +39,192 @@ const Register = () => {
     if (avatar) formData.append('avatar', avatar);
 
     try {
-      console.log('Sending registration request to backend...');
-      const API_BASE = import.meta.env.VITE_API_URL;
-
-      if (!API_BASE) {
-        throw new Error('API URL not configured. Check your .env file.');
-      }
-
-      const res = await axios.post(`${API_BASE}/register`, formData, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/register`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      console.log('Registration successful:', res.data);
-
-      // Save email for verification step
       localStorage.setItem('pendingEmail', email);
-
-      // Show success and navigate to verify page
       toast.success(res.data.message || 'Verification code sent to your email!');
-
-      // Navigate to OTP verification
       navigate('/verify');
-
     } catch (err) {
-      console.error('Error during registration:', err);
-
-      let errorMsg = 'Registration failed';
-
-      if (err.message === 'Network Error' || err.code === 'ERR_NETWORK') {
-        errorMsg = 'Cannot connect to server. Is your backend running?';
-      } else if (err.response?.data?.error) {
-        errorMsg = err.response.data.error;
-      } else if (err.message) {
-        errorMsg = err.message;
-      }
-
+      const errorMsg =
+        err.response?.data?.error ||
+        err.message === 'Network Error' ? 'Cannot connect to server' :
+        'Registration failed';
       toast.error(errorMsg);
     } finally {
-      console.log('Registration process completed.');
       setLoading(false);
     }
   };
 
   return (
     <>
-      <Toaster position="top-right" />
-      <style>{`
-        /* Your existing beautiful styles - unchanged */
-        .register-container {
-          min-height: 100vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          padding: 1rem;
-        }
+      <Toaster />
 
-        .register-card {
-          background: white;
-          padding: 3rem;
-          border-radius: 1.5rem;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-          width: 100%;
-          max-width: 480px;
-          animation: slideUp 0.5s ease-out;
-        }
+      <div className="min-h-screen bg-linear-to-br from-gray-950 via-gray-900 to-black">
+        {/* Spacer for navbar */}
+        <div className="h-16 md:h-20" aria-hidden="true" />
 
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(30px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
+        <main className="flex-1 flex items-center justify-center py-8 md:py-12 px-4 sm:px-6 lg:px-8">
+          <div className="w-full max-w-7xl">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+              {/* LEFT - Promotional Content */}
+              <div className="hidden lg:flex flex-col justify-center space-y-10">
+                <div className="space-y-6">
+                  <div className="inline-flex items-center gap-3 px-4 py-2 bg-gray-800/50 backdrop-blur-sm rounded-full border border-gray-700/50">
+                    <UserPlus size={20} className="text-indigo-500" />
+                    <span className="text-indigo-400 font-medium text-sm">JOIN AI-CAREER COACH</span>
+                  </div>
 
-        .register-header {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.75rem;
-          margin-bottom: 2rem;
-          font-size: 2rem;
-          font-weight: 700;
-          color: #1a202c;
-        }
+                  <h1 className="text-5xl lg:text-6xl font-bold leading-tight bg-linear-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
+                    Start Your
+                    <br />
+                    <span className="text-indigo-500">Journey</span>
+                  </h1>
 
-        .avatar-section {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          margin-bottom: 1.5rem;
-        }
+                  <p className="text-xl text-gray-400 max-w-lg">
+                    Create your account and unlock AI-powered tools to elevate your tech career.
+                  </p>
+                </div>
 
-        .avatar-preview {
-          width: 120px;
-          height: 120px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-bottom: 1rem;
-          overflow: hidden;
-          box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-          border: 4px solid #f0f4ff;
-        }
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 rounded-lg bg-indigo-950/40 border border-indigo-900/40">
+                      <UserPlus size={24} className="text-indigo-500" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-white">Get Started Fast</h3>
+                      <p className="text-gray-400 text-sm mt-1">
+                        Simple registration with email verification
+                      </p>
+                    </div>
+                  </div>
 
-        .avatar-preview img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 rounded-lg bg-purple-950/40 border border-purple-900/40">
+                      <Mail size={24} className="text-purple-500" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-white">Secure Account</h3>
+                      <p className="text-gray-400 text-sm mt-1">
+                        Protected with modern authentication
+                      </p>
+                    </div>
+                  </div>
 
-        .avatar-placeholder {
-          font-size: 3rem;
-          color: white;
-        }
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 rounded-lg bg-pink-950/40 border border-pink-900/40">
+                      <User size={24} className="text-pink-500" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-white">Personal Profile</h3>
+                      <p className="text-gray-400 text-sm mt-1">
+                        Add your avatar and stand out
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-        .avatar-input-label {
-          position: relative;
-          display: inline-block;
-          cursor: pointer;
-        }
+              {/* RIGHT - Registration Form */}
+              <div className="w-full max-w-md mx-auto lg:mx-0">
+                <div className="bg-gray-900/60 backdrop-blur-2xl border border-gray-800/50 rounded-2xl shadow-2xl shadow-black/60 overflow-hidden">
+                  {/* Mobile heading */}
+                  <div className="lg:hidden px-8 pt-10 pb-6 text-center border-b border-gray-800/40">
+                    <h2 className="text-3xl font-bold text-white">Create Account</h2>
+                    <p className="text-gray-400 mt-2">Join the future of tech today</p>
+                  </div>
 
-        .avatar-input {
-          display: none;
-        }
+                  <form onSubmit={handleSubmit} className="p-8 lg:p-10 space-y-6">
+                    {/* Avatar */}
+                    <div className="flex flex-col items-center space-y-4">
+                      <div className="relative w-28 h-28 rounded-full overflow-hidden bg-linear-to-br from-indigo-600 to-purple-600 border-4 border-indigo-500/30 shadow-xl">
+                        {avatarPreview ? (
+                          <img src={avatarPreview} alt="Avatar preview" className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-white/70">
+                            <User size={48} />
+                          </div>
+                        )}
+                      </div>
 
-        .avatar-input-label span {
-          padding: 0.75rem 1.5rem;
-          background: #f0f4ff;
-          color: #667eea;
-          border-radius: 0.75rem;
-          font-weight: 600;
-          transition: all 0.3s ease;
-        }
+                      <label className="cursor-pointer">
+                        <input  type="file"  accept="image/*" onChange={handleAvatarChange}
+                          className="hidden" />
+                        <span className="px-5 py-2.5 bg-gray-800/70 border border-gray-700 rounded-lg text-indigo-400 hover:bg-indigo-900/40 hover:text-indigo-300 transition-colors text-sm font-medium">
+                          Choose Profile Picture
+                        </span>
+                      </label>
+                    </div>
 
-        .avatar-input-label:hover span {
-          background: #667eea;
-          color: white;
-          transform: translateY(-2px);
-          box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
+                    {/* Name */}
+                    <div className="space-y-2">
+                      <label htmlFor="name" className="text-sm font-medium text-gray-300 block">
+                        Full Name
+                      </label>
+                      <div className="relative group">
+                        <User className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 transition-colors group-focus-within:text-indigo-500" size={18} />
+                        <input  id="name" type="text" value={name} onChange={(e) => setName(e.target.value)}  placeholder="John Doe" className="w-full bg-gray-800/40 border border-gray-700/80 text-white pl-11 pr-4 py-3.5 rounded-xl focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/30 transition-all" required  />
+                      </div>
+                    </div>
 
-        .register-input {
-          width: 100%;
-          padding: 1rem;
-          border: 2px solid #e2e8f0;
-          border-radius: 0.75rem;
-          font-size: 1rem;
-          margin-bottom: 1.25rem;
-          transition: all 0.3s ease;
-          outline: none;
-        }
+                    {/* Email */}
+                    <div className="space-y-2">
+                      <label htmlFor="email" className="text-sm font-medium text-gray-300 block">
+                        Email address
+                      </label>
+                      <div className="relative group">
+                        <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 transition-colors group-focus-within:text-indigo-500" size={18} />
+                        <input  id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}  placeholder="name@company.com" className="w-full bg-gray-800/40 border border-gray-700/80 text-white pl-11 pr-4 py-3.5 rounded-xl focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/30 transition-all"
+                          required />
+                      </div>
+                    </div>
 
-        .register-input:focus {
-          border-color: #667eea;
-          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
+                    {/* Password */}
+                    <div className="space-y-2">
+                      <label htmlFor="password" className="text-sm font-medium text-gray-300 block">
+                        Password
+                      </label>
+                      <div className="relative group">
+                        <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 transition-colors group-focus-within:text-indigo-500" size={18} />
+                        <input id="password" type={showPassword ? 'text' : 'password'}
+                          value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className="w-full bg-gray-800/40 border border-gray-700/80 text-white pl-11 pr-12 py-3.5 rounded-xl focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/30 transition-all" required />
+                        <button   type="button"   onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300"  >
+                          {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                        </button>
+                      </div>
+                    </div>
 
-        .password-wrapper {
-          position: relative;
-          margin-bottom: 1.25rem;
-        }
+                    <button
+                      type="submit"
+                      disabled={loading}   className="w-full bg-linear-to-r from-indigo-600 to-purple-700 hover:from-indigo-700 hover:to-purple-800 text-white font-semibold py-3.5 rounded-xl transition-all shadow-lg shadow-indigo-900/40 disabled:opacity-60 flex items-center justify-center gap-2"
+                    >
+                      {loading ? (
+                        <>
+                          <Loader2 size={18} className="animate-spin" />
+                          <span>Creating Account...</span>
+                        </>
+                      ) : (
+                        'Create Account'
+                      )}
+                    </button>
 
-        .password-toggle {
-          position: absolute;
-          right: 1rem;
-          top: 50%;
-          transform: translateY(-50%);
-          background: none;
-          border: none;
-          cursor: pointer;
-          color: #667eea;
-        }
-
-        .register-button {
-          width: 100%;
-          padding: 1rem;
-          border: none;
-          border-radius: 0.75rem;
-          font-size: 1rem;
-          font-weight: 600;
-          cursor: pointer;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.5rem;
-        }
-
-        .register-button:disabled {
-          opacity: 0.7;
-          cursor: not-allowed;
-        }
-
-        .spinner {
-          animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-
-        .register-footer {
-          margin-top: 2rem;
-          text-align: center;
-          color: #718096;
-        }
-
-        .register-link {
-          color: #667eea;
-          font-weight: 600;
-        }
-      `}</style>
-
-      <div className="register-container">
-        <form onSubmit={handleSubmit} className="register-card">
-          <h2 className="register-header">
-            <UserPlus size={32} /> Register
-          </h2>
-
-          <div className="avatar-section">
-            <div className="avatar-preview">
-              {avatarPreview ? (
-                <img src={avatarPreview} alt="Avatar preview" />
-              ) : (
-                <span className="avatar-placeholder">👤</span>
-              )}
+                    <p className="text-center text-sm text-gray-400">
+                      Already have an account?{' '}
+                      <Link to="/login" className="text-indigo-400 hover:text-indigo-300 font-medium">
+                        Sign in
+                      </Link>
+                    </p>
+                  </form>
+                </div>
+              </div>
             </div>
-            <label className="avatar-input-label">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleAvatarChange}
-                className="avatar-input"
-              />
-              <span>Choose Avatar</span>
-            </label>
           </div>
+        </main>
 
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Full Name"
-            className="register-input"
-            required
-          />
-
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email Address"
-            className="register-input"
-            required
-          />
-
-          <div className="password-wrapper">
-            <input
-              type={showPassword ? 'text' : 'password'}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              className="register-input"
-              style={{ paddingRight: '3rem' }}
-              required
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="password-toggle"
-            >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-          </div>
-
-          <button type="submit" className="register-button" disabled={loading}>
-            {loading && <Loader size={20} className="spinner" />}
-            {loading ? 'Creating Account...' : 'Register'}
-          </button>
-
-          <p className="register-footer">
-            Already have an account?{' '}
-            <Link to="/login" className="register-link">
-              Login
-            </Link>
-          </p>
-        </form>
+        {/* Spacer for footer */}
+        <div className="h-16 md:h-20" aria-hidden="true" />
       </div>
     </>
   );

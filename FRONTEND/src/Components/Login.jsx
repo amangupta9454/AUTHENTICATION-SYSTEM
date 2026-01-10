@@ -1,239 +1,8 @@
-// import { useState } from 'react';
-// import { Link, useNavigate } from 'react-router-dom';
-// import axios from 'axios';
-// import { LogIn } from 'lucide-react';
-
-// const Login = () => {
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const navigate = useNavigate();
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const res = await axios.post(`${import.meta.env.VITE_API_URL}/login`, { email, password });
-//       localStorage.setItem('token', res.data.token);
-//       navigate('/dashboard');
-//     } catch (err) {
-//       alert(err.response.data.error);
-//     }
-//   };
-
-
-//   return (
-//     <>
-//       <style>{`
-//         .login-container {
-//           min-height: 100vh;
-//           display: flex;
-//           align-items: center;
-//           justify-content: center;
-//           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-//           padding: 1rem;
-//         }
-
-//         .login-card {
-//           background: white;
-//           padding: 3rem;
-//           border-radius: 1.5rem;
-//           box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-//           width: 100%;
-//           max-width: 440px;
-//           animation: slideUp 0.5s ease-out;
-//         }
-
-//         @keyframes slideUp {
-//           from {
-//             opacity: 0;
-//             transform: translateY(30px);
-//           }
-//           to {
-//             opacity: 1;
-//             transform: translateY(0);
-//           }
-//         }
-
-//         .login-header {
-//           display: flex;
-//           align-items: center;
-//           justify-content: center;
-//           gap: 0.75rem;
-//           margin-bottom: 2rem;
-//           font-size: 2rem;
-//           font-weight: 700;
-//           color: #1a202c;
-//         }
-
-//         .login-input {
-//           width: 100%;
-//           padding: 1rem;
-//           border: 2px solid #e2e8f0;
-//           border-radius: 0.75rem;
-//           font-size: 1rem;
-//           margin-bottom: 1.25rem;
-//           transition: all 0.3s ease;
-//           outline: none;
-//         }
-
-//         .login-input:focus {
-//           border-color: #667eea;
-//           box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-//         }
-
-//         .login-input::placeholder {
-//           color: #a0aec0;
-//         }
-
-//         .login-button {
-//           width: 100%;
-//           padding: 1rem;
-//           border: none;
-//           border-radius: 0.75rem;
-//           font-size: 1rem;
-//           font-weight: 600;
-//           cursor: pointer;
-//           transition: all 0.3s ease;
-//           text-transform: uppercase;
-//           letter-spacing: 0.5px;
-//         }
-
-//         .login-button-primary {
-//           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-//           color: white;
-//           margin-bottom: 1rem;
-//         }
-
-//         .login-button-primary:hover {
-//           transform: translateY(-2px);
-//           box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-//         }
-
-//         .login-button-primary:active {
-//           transform: translateY(0);
-//         }
-
-//         .login-button-google {
-//           background: white;
-//           color: #1a202c;
-//           border: 2px solid #e2e8f0;
-//           display: flex;
-//           align-items: center;
-//           justify-content: center;
-//           gap: 0.5rem;
-//         }
-
-//         .login-button-google:hover {
-//           background: #f7fafc;
-//           border-color: #cbd5e0;
-//           transform: translateY(-2px);
-//           box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-//         }
-
-//         .login-button-google:active {
-//           transform: translateY(0);
-//         }
-
-//         .login-button-google::before {
-//           content: 'G';
-//           display: inline-flex;
-//           align-items: center;
-//           justify-content: center;
-//           width: 24px;
-//           height: 24px;
-//           background: linear-gradient(135deg, #EA4335 0%, #FBBC05 25%, #34A853 50%, #4285F4 100%);
-//           border-radius: 50%;
-//           font-weight: 700;
-//           color: white;
-//           font-size: 14px;
-//         }
-
-//         .login-footer {
-//           margin-top: 2rem;
-//           text-align: center;
-//           color: #718096;
-//           font-size: 0.95rem;
-//         }
-
-//         .login-link {
-//           color: #667eea;
-//           text-decoration: none;
-//           font-weight: 600;
-//           transition: color 0.3s ease;
-//         }
-
-//         .login-link:hover {
-//           color: #764ba2;
-//           text-decoration: underline;
-//         }
-
-//         @media (max-width: 640px) {
-//           .login-card {
-//             padding: 2rem 1.5rem;
-//           }
-
-//           .login-header {
-//             font-size: 1.75rem;
-//           }
-
-//           .login-input {
-//             padding: 0.875rem;
-//           }
-
-//           .login-button {
-//             padding: 0.875rem;
-//           }
-//         }
-
-//         @media (max-width: 400px) {
-//           .login-card {
-//             padding: 1.5rem 1rem;
-//           }
-
-//           .login-header {
-//             font-size: 1.5rem;
-//           }
-//         }
-//       `}</style>
-
-//       <div className="login-container">
-//         <form onSubmit={handleSubmit} className="login-card">
-//           <h2 className="login-header">
-//             <LogIn size={32} /> Login
-//           </h2>
-//           <input
-//             type="email"
-//             value={email}
-//             onChange={(e) => setEmail(e.target.value)}
-//             placeholder="Email"
-//             className="login-input"
-//             required
-//           />
-//           <input
-//             type="password"
-//             value={password}
-//             onChange={(e) => setPassword(e.target.value)}
-//             placeholder="Password"
-//             className="login-input"
-//             required
-//           />
-//           <button type="submit" className="login-button login-button-primary">
-//             Login
-//           </button>
-          
-//           <p className="login-footer">
-//             No account? <Link to="/register" className="login-link">Register</Link>
-//           </p>
-//         </form>
-//       </div>
-//     </>
-//   );
-// };
-
-// export default Login;
+// Login.jsx
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { LogIn, Eye, EyeOff, Loader } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Mail, Lock, LogIn, Trophy, Zap, Users } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
 const Login = () => {
@@ -246,13 +15,14 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/login`, { email, password });
       localStorage.setItem('token', res.data.token);
-      toast.success('Login successful!');
-      navigate('/dashboard');
+      toast.success('Login successful', { duration: 3000 });
+      setTimeout(() => navigate('/dashboard'), 700);
     } catch (err) {
-      toast.error(err.response?.data?.error || 'Login failed');
+      toast.error(err.response?.data?.error || 'Invalid credentials', { duration: 4500 });
     } finally {
       setLoading(false);
     }
@@ -260,57 +30,150 @@ const Login = () => {
 
   return (
     <>
-      <Toaster position="top-right" />
-      <style>{`
-        .login-container { min-height: 100vh; display: flex; align-items: center; justify-content: center;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1rem; }
-        .login-card { background: white; padding: 3rem; border-radius: 1.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-          width: 100%; max-width: 440px; animation: slideUp 0.5s ease-out; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        .login-header { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 2rem;
-          font-size: 2rem; font-weight: 700; color: #1a202c; }
-        .login-input { width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 0.75rem;
-          font-size: 1rem; margin-bottom: 1.25rem; transition: all 0.3s; outline: none; }
-        .login-input:focus { border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.1); }
-        .password-wrapper { position: relative; margin-bottom: 1rem; }
-        .password-toggle { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
-          background: none; border: none; cursor: pointer; color: #667eea; }
-        .forgot-link { display: block; text-align: right; color: #667eea; font-size: 0.875rem; margin-bottom: 1rem; }
-        .login-button-primary { width: 100%; padding: 1rem; border: none; border-radius: 0.75rem; font-size: 1rem;
-          font-weight: 600; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;
-          display: flex; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer; }
-        .login-button-primary:disabled { opacity: 0.7; cursor: not-allowed; }
-        .spinner { animation: spin 1s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .login-footer { margin-top: 2rem; text-align: center; color: #718096; }
-        .login-link { color: #667eea; font-weight: 600; }
-      `}</style>
+      <Toaster />
 
-      <div className="login-container">
-        <form onSubmit={handleSubmit} className="login-card">
-          <h2 className="login-header"><LogIn size={32} /> Login</h2>
+      <div className="min-h-screen bg-linear-to-br from-gray-950 via-gray-900 to-black">
+        {/* Main content with proper top/bottom padding to respect navbar & footer */}
+        <div className="min-h-screen flex flex-col">
+          {/* Spacer for fixed navbar (adjust height according to your navbar) */}
+          <div className="h-16 md:h-20" aria-hidden="true" />
 
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" className="login-input" required />
+          <main className="flex-1 flex items-center justify-center py-8 md:py-12 px-4 sm:px-6 lg:px-8">
+            <div className="w-full max-w-7xl">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                {/* LEFT COLUMN - Promotional / Branding Content */}
+                <div className="hidden lg:flex flex-col justify-center space-y-10">
+                  <div className="space-y-6">
+                    <div className="inline-flex items-center gap-3 px-4 py-2 bg-gray-800/50 backdrop-blur-sm rounded-full border border-gray-700/50">
+                      <Zap size={20} className="text-blue-500" />
+                      <span className="text-blue-400 font-medium text-sm">AI-CAREER COACH</span>
+                    </div>
 
-          <div className="password-wrapper">
-            <input type={showPassword ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password" className="login-input" style={{ paddingRight: '3rem' }} required />
-            <button type="button" onClick={() => setShowPassword(!showPassword)} className="password-toggle">
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-          </div>
+                    <h1 className="text-5xl lg:text-6xl font-bold leading-tight bg-linear-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
+                      Welcome Back,
+                      <br />
+                      <span className="text-blue-500">Innovator!</span>
+                    </h1>
 
-          <Link to="/forgot-password" className="forgot-link">Forgot Password?</Link>
+                    <p className="text-xl text-gray-400 max-w-lg">
+                      Join our community of tech enthusiasts and take your skills to the next level with AI-powered interview preparation and career growth tools.
+                    </p>
+                  </div>
 
-          <button type="submit" className="login-button-primary" disabled={loading}>
-            {loading && <Loader size={20} className="spinner" />}
-            {loading ? 'Logging in...' : 'Login'}
-          </button>
+                  {/* Features */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
+                    <div className="flex items-start gap-4">
+                      <div className="p-3 rounded-lg bg-blue-950/40 border border-blue-900/40">
+                        <Trophy size={24} className="text-blue-500" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-white">AI-Powered Career Growth</h3>
+                        <p className="text-gray-400 text-sm mt-1">
+                          Personalized interview practice & feedback
+                        </p>
+                      </div>
+                    </div>
 
-          <p className="login-footer">
-            No account? <Link to="/register" className="login-link">Register</Link>
-          </p>
-        </form>
+                    <div className="flex items-start gap-4">
+                      <div className="p-3 rounded-lg bg-indigo-950/40 border border-indigo-900/40">
+                        <Zap size={24} className="text-indigo-500" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-white">Exciting Competitions</h3>
+                        <p className="text-gray-400 text-sm mt-1">
+                          Participate in cutting-edge tech challenges
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-4">
+                      <div className="p-3 rounded-lg bg-green-950/40 border border-green-900/40">
+                        <Users size={24} className="text-green-500" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-white">Network & Collaborate</h3>
+                        <p className="text-gray-400 text-sm mt-1">
+                          Connect with fellow tech enthusiasts
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* RIGHT COLUMN - Login Form */}
+                <div className="w-full max-w-md mx-auto lg:mx-0">
+                  <div className="bg-gray-900/60 backdrop-blur-2xl border border-gray-800/50 rounded-2xl shadow-2xl shadow-black/60 overflow-hidden">
+                    {/* Mobile-only heading */}
+                    <div className="lg:hidden px-8 pt-10 pb-6 text-center border-b border-gray-800/40">
+                      <h2 className="text-3xl font-bold text-white">Welcome Back</h2>
+                      <p className="text-gray-400 mt-2">Sign in to continue</p>
+                    </div>
+
+                    <form onSubmit={handleSubmit} className="p-8 lg:p-10 space-y-6">
+                      {/* Email */}
+                      <div className="space-y-2">
+                        <label htmlFor="email" className="text-sm font-medium text-gray-300 block">
+                          Email address
+                        </label>
+                        <div className="relative group">
+                          <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 transition-colors group-focus-within:text-blue-500" size={18} />
+                          <input  id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@company.com" className="w-full bg-gray-800/40 border border-gray-700/80 text-white pl-11 pr-4 py-3.5 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-600/30 transition-all"  required />
+                        </div>
+                      </div>
+
+                      {/* Password */}
+                      <div className="space-y-2">
+                        <label htmlFor="password" className="text-sm font-medium text-gray-300 block">
+                          Password
+                        </label>
+                        <div className="relative group">
+                          <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 transition-colors group-focus-within:text-blue-500" size={18} />
+                          <input   id="password"   type={showPassword ? 'text' : 'password'}   value={password}   onChange={(e) => setPassword(e.target.value)}   placeholder="••••••••"   className="w-full bg-gray-800/40 border border-gray-700/80 text-white pl-11 pr-12 py-3.5 rounded-xl  focus:border-blue-600 focus:ring-2 focus:ring-blue-600/30 transition-all"
+                            required  />
+                          <button   type="button"   onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300" >
+                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-end">
+                        <Link to="/forgot-password" className="text-sm text-blue-400 hover:text-blue-300">
+                          Forgot password?
+                        </Link>
+                      </div>
+
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full bg-linear-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-semibold py-3.5 rounded-xl transition-all shadow-lg shadow-blue-900/40 disabled:opacity-60"
+                      >
+                        {loading ? (
+                          <div className="flex items-center justify-center gap-2">
+                            <Loader2 size={18} className="animate-spin" />
+                            <span>Signing in...</span>
+                          </div>
+                        ) : (
+                          'Sign In'
+                        )}
+                      </button>
+
+                      <p className="text-center text-sm text-gray-400">
+                        Don't have an account?{' '}
+                        <Link to="/register" className="text-blue-400 hover:text-blue-300 font-medium">
+                          Create account
+                        </Link>
+                      </p>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+
+          {/* Spacer for footer */}
+          <div className="h-16 md:h-20" aria-hidden="true" />
+        </div>
       </div>
     </>
   );

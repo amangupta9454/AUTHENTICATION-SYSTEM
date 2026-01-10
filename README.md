@@ -41,6 +41,17 @@ AUTH/
 │   │   │   ├── ForgetPassword.jsx
 │   │   │   ├── Verify.jsx
 │   │   │   ├── VerifyReset.jsx
+│   │   │   ├── Reset.jsx
+│   │   ├── Pages/
+│   │   │   ├── Home.jsx
+│   │   │   ├── About.jsx
+│   │   │   ├── Assesment.jsx
+│   │   │   ├── Contact.jsx
+│   │   │   ├── Interview.jsx
+│   │   │   ├── Navbar.jsx
+│   │   ├── Styles/
+│   │   │   ├── CarrerPath.css
+│   │   │   ├── Home.css
 │   │   ├── App.jsx
 │   │   └── main.jsx
 │   │
@@ -159,11 +170,42 @@ VITE_API_URL=http://localhost:5000/api/auth
 
 <h2>🔧 Core Functions</h2>
 <ul>
-   <li>🔐 User authentication</li>
-  <li>🔑 JWT token management</li>
-  <li>🌐 Google OAuth login</li>
-  <li>☁️ Cloudinary file uploads</li>
-  <li>🛡️ Protected APIs</li>
+   <li>🔐 Secure user authentication system with email-based registration and login flows</li>
+   <li>🔑 JWT token generation, validation, and session management for secure user access</li>
+   <li>🌐 Google OAuth authentication enabling fast and secure third-party login</li>
+   <li>☁️ Cloudinary-based file upload system for secure and optimized media storage</li>
+   <li>🛡️ Protected APIs using authentication middleware to restrict unauthorized access</li>
+   <li>🏠 Centralized Home page for seamless navigation across the platform</li>
+   <li>ℹ️ About Us section showcasing the company’s vision, mission, and values</li>
+   <li>🤖 AI Interviewer module for realistic and structured interview practice</li>
+   <li>🧠 Aptitude examination system for assessing logical and quantitative skills</li>
+   <li>📱 Fully responsive layout ensuring compatibility across all devices</li>
+   <li>🧭 Smooth user flow with intuitive and accessible navigation</li>
+   <li>🔻 Informative footer with quick links and essential platform details</li>
+</ul>
+
+<h2>🔧 Core Features</h2>
+<ul>
+   <li>🏠 Interactive and responsive Home page with smooth navigation</li>
+    <li>ℹ️ Detailed About Us page highlighting company vision and mission</li>
+    <li>🤖 AI Interviewer module for realistic interview practice</li>
+    <li>🧠 Aptitude examination system for skill and knowledge assessment</li>
+    <li>🔐 Secure user authentication with registration and login</li>
+    <li>🔑 JWT-based token management for session security</li>
+    <li>🌐 Google OAuth login for quick and secure authentication</li>
+    <li>📧 Automated email notifications for user actions</li>
+    <li>☁️ Cloudinary-powered media upload and storage</li>
+    <li>🛡️ Protected APIs with role-based access control</li>
+    <li>📜 Certificate verification system for authenticity checks</li>
+    <li>📝 Internship registration and application management</li>
+    <li>📞 Contact form integrated with Getform.io</li>
+    <li>📱 Fully responsive design for all devices</li>
+    <li>⚡ High-performance, fast-loading application</li>
+    <li>🧭 User-friendly interface with intuitive navigation</li>
+    <li>🔻 Footer with quick links and essential information</li>
+    <li>🔒 Secure backend architecture following best practices</li>
+    <li>🚀 Scalable system ready for future enhancements</li>
+
 </ul>
 
  <hr> 
