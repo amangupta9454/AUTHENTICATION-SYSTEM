@@ -14,6 +14,7 @@ import Footer from './Pages/Footer.jsx'
 import About from './Pages/About.jsx'
 import Assesment from './Pages/Assesment.jsx'
 import Interview from './Pages/interview.jsx'
+import ResumeEmbed from './Pages/ResumeEmbed.jsx'
 const App = () => {
   return (
     
@@ -38,6 +39,7 @@ const App = () => {
         <Route path='/about' element={<><About /><Footer /></>} />
         <Route path='/assesment' element={<Assesment />} />
         <Route path='/interview' element={<><Interview /><Footer /></>} />
+         <Route path='/resume' element={<><ResumeEmbed /><Footer /></>} />
         
       </Routes>
     </Router>
