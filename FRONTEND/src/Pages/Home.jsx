@@ -1301,12 +1301,7 @@ const Home = () => {
             </div>
           </div>
           {/* Floating Chatbot Button */}
-        <div className="fixed bottom-8 left-8 z-50">
-        <Link to="https://mindstep-bot.netlify.app/"  target="_blank" rel="noopener noreferrer" className="glass-card rounded-full p-4 group flex items-center justify-center transition-all duration-300 hover:scale-110"
-          aria-label="Open AI Career Coach Chatbot" >
-          <Bot  className="w-8 h-8 text-blue-400 group-hover:text-blue-300 transition-colors duration-300"  />
-        </Link>
-        </div>
+       
         </div>
       </section>
     </>
