@@ -15,6 +15,7 @@ import About from './Pages/About.jsx'
 import Assesment from './Pages/Assesment.jsx'
 import Interview from './Pages/interview.jsx'
 import ResumeEmbed from './Pages/ResumeEmbed.jsx'
+import Career from './Components/Career.jsx'
 const App = () => {
   return (
     
@@ -30,6 +31,7 @@ const App = () => {
           } />
         <Route path='/register' element={<><Register /><Footer /></>} />
         <Route path='/verify' element={<><Verify /><Footer /></>} />
+        <Route path='/career' element={<><Career /></>} />
         <Route path='/login' element={<><Login /><Footer /></>} />
         <Route path="/forgot-password" element={<><ForgotPassword /><Footer /></>} />
         <Route path="/verify-reset" element={<><VerifyReset /><Footer /></>} />

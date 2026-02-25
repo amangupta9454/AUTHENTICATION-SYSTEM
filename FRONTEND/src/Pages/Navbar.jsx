@@ -76,6 +76,7 @@ const Navbar = () => {
       name: 'Career Tools',
       subLinks: [
         { name: 'Resume Builder', to: '/resume' },
+        { name: 'Career Pathway', to: '/career' },
         // { name: 'Skill Gap Analyzer', to: '/skills' },
         { name: 'Online Exam', to: '/assesment' },
         { name: 'Ai - Interviewer', to: '/interview' },
