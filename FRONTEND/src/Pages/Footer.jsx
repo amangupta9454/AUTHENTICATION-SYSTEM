@@ -59,9 +59,9 @@ const Footer = () => {
         {/* Contact Info */}
         <div className="p-6 sm:p-8 rounded-2xl bg-gray-800/90 border border-gray-700/30 backdrop-blur-xl transition-all duration-500 hover:shadow-2xl hover:shadow-indigo-500/50 group">
           <h3 className="text-3xl sm:text-4xl font-extrabold text-white mb-4 tracking-tight group-hover:scale-105 transition-transform duration-300">AI_Career</h3>
-          <p className="text-sm sm:text-base leading-relaxed font-light text-gray-300">MISHALGHADHI,GHAZIABAD</p>
-          <p className="text-sm sm:text-base font-light text-gray-300">Email: ag0567688@gmail.com</p>
-          <p className="text-sm sm:text-base font-light text-gray-300">Phone: 9560472926</p>
+          <p className="text-sm sm:text-base leading-relaxed font-light text-gray-300">HIET,GHAZIABAD</p>
+          <p className="text-sm sm:text-base font-light text-gray-300">Email: kksnehapal@gmail.com</p>
+          <p className="text-sm sm:text-base font-light text-gray-300">Phone: 9651585712</p>
         </div>
 
         {/* Navigation */}
@@ -86,7 +86,7 @@ const Footer = () => {
         </div>
 
         {/* Social Links */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-gray-800/90 border border-gray-700/30 backdrop-blur-xl transition-all duration-500 hover:shadow-2xl hover:shadow-rose-500/50">
+        {/* <div className="p-6 sm:p-8 rounded-2xl bg-gray-800/90 border border-gray-700/30 backdrop-blur-xl transition-all duration-500 hover:shadow-2xl hover:shadow-rose-500/50">
           <h4 className="text-xl sm:text-2xl font-semibold text-rose-400 mb-4 tracking-tight">Connect</h4>
           <div className="flex gap-4 sm:gap-6 text-2xl sm:text-3xl">
             {[
@@ -102,7 +102,7 @@ const Footer = () => {
               </a>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* CTA Section */}
         <div className="p-6 sm:p-8 rounded-2xl bg-gray-800/90 border border-gray-700/30 backdrop-blur-xl transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/50">
@@ -129,7 +129,7 @@ const Footer = () => {
       </div>
 
       {/* Team Modal */}
-      {isModalOpen && (
+      {/* {isModalOpen && (
         <div className="fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center z-50 p-4">
           <div className="relative bg-gray-900/95 rounded-2xl p-6 sm:p-8 max-w-5xl w-full max-h-[90vh] overflow-y-auto border border-gray-700/50 shadow-2xl transition-all duration-300">
             <button onClick={() => setIsModalOpen(false)}
@@ -155,7 +155,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Custom Tailwind Keyframes */}
       <style>{`

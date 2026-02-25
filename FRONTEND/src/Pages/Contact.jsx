@@ -180,20 +180,20 @@ const Contact = () => {
             {
               icon: Mail,
               title: "Email",
-              value: "ag0567688@gmail.com",
-              href: "mailto:ag0567688@gmail.com"
+              value: "kksnehapal@gmail.com",
+              href: "mailto:kksnehapal@gmail.com"
             },
             {
               icon: Phone,
               title: "Phone",
-              value: "+91 9560472926",
-              href: "tel:+919560472926"
+              value: "+91 9876543213",
+              href: "tel:+919876543213"
             },
             {
               icon: MessageCircle,
               title: "WhatsApp",
-              value: "+91 9560472926",
-              href: "https://wa.me/919560472926"
+              value: "+91 9876543213",
+              href: "https://wa.me/919876543213"
             }
           ].map((contact, index) => (
             <div

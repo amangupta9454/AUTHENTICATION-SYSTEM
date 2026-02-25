@@ -350,7 +350,7 @@ const About = () => {
         </section>
 
         {/* Meet the Team */}
-        <section className="max-w-7xl mx-auto transform transition-all duration-1000 hover:scale-[1.01]">
+        {/* <section className="max-w-7xl mx-auto transform transition-all duration-1000 hover:scale-[1.01]">
           <div className="text-center mb-12 md:mb-16 lg:mb-20">
             <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold bg-linear-to-r from-white to-gray-400 bg-clip-text text-transparent mb-3 md:mb-4 lg:mb-6 tracking-tight">
               Meet the Team
@@ -385,7 +385,7 @@ const About = () => {
               </div>
             ))}
           </div>
-        </section>
+        </section> */}
 
         {/* Our Tech Stack */}
         <section className="max-w-7xl mx-auto mb-12 md:mb-16 lg:mb-20 transform transition-all duration-1000 hover:scale-[1.01]">
